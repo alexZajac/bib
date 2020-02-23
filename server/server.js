@@ -81,10 +81,6 @@ const sortRestaurants = (r1, r2, sortingFilter, userLocation) => {
   }
 };
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
 app.post("/restaurants", (req, res) => {
   const {
     distinction: { value: distinctionValue },

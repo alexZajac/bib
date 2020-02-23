@@ -1,5 +1,11 @@
 const utils = require("./utils");
 const axios = require("axios");
+const { get: maitreGet } = require("./maitre");
+const { get: michelinGet } = require("./michelin");
+const { MongoClient } = require("mongodb");
+const MONGO_URI =
+  "mongodb+srv://bibUser:xLUBmiK5byDfYAzT@bibcluster-e4tmw.mongodb.net/test?retryWrites=true&w=majority";
+
 const { readJson, writeJson, trimSpace, distance } = utils;
 const API_KEY = "e8d78109d9c60c";
 
@@ -56,7 +62,6 @@ const normalizeMichelinRestaurant = (name, phone, location) => {
  */
 const getGoldenRestaurants = (michelinRestaurants, maitreRestaurants) => {
   let results = [];
-  let _id = 0;
   michelinRestaurants.forEach(michelin_r => {
     let { name, phone, location } = michelin_r;
     const {
@@ -80,7 +85,7 @@ const getGoldenRestaurants = (michelinRestaurants, maitreRestaurants) => {
           distance(formattedMichAdress, formattedMaitreAdress) >=
             THRESHOLD_ADRESS)
       ) {
-        results.push({ _id: _id++, ...michelin_r });
+        results.push(michelin_r);
         break;
       }
     }
@@ -123,7 +128,6 @@ const encodeCoordinates = async restaurants =>
           long = parseFloat(data[0].lon);
         }
         sleep();
-        console.log(result.length);
       } catch (e) {
         console.log(e);
       } finally {
@@ -133,13 +137,33 @@ const encodeCoordinates = async restaurants =>
     resolve(result);
   });
 
+const writeToDatabase = restaurants => {
+  const client = new MongoClient(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
+  client.connect(err => {
+    if (err) console.error(err);
+    const collection = client.db("main").collection("restaurants");
+    collection.deleteMany({}, (err, res) => {
+      if (err) throw err;
+      console.log(`Deleted ${res.deletedCount} objects`);
+      collection.insertMany(restaurants, (err, res) => {
+        if (err) throw err;
+        console.log("Number of documents inserted: " + res.insertedCount);
+        client.close();
+      });
+    });
+  });
+};
+
 /**
  * Get all France located Michelin restaurants and writes themlet to json file
  * @return {Array} Bib restaurants with Maitre Restaurateur distinction
  */
 const get = async (withWrite = true) => {
-  const michelinRestaurants = readJson("./server/allRestaurants.json");
-  const maitreRestaurants = readJson("./server/maitreRestaurants.json");
+  const michelinRestaurants = readJson("./allRestaurants.json"); // await michelinGet();
+  const maitreRestaurants = readJson("./maitreRestaurants.json"); // await maitreGet();
   const goldenRestaurants = getGoldenRestaurants(
     michelinRestaurants,
     maitreRestaurants
@@ -147,7 +171,7 @@ const get = async (withWrite = true) => {
   // encode coordinates
   try {
     const result = await encodeCoordinates(goldenRestaurants);
-    if (withWrite) writeJson(result, "./server/goldenRestaurants.json");
+    if (withWrite) writeToDatabase(result);
     return result.filter(r => r.distinction.type === "BIB_GOURMAND");
   } catch (e) {
     console.error(e);

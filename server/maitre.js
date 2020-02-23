@@ -99,9 +99,10 @@ const allRestaurants = async () => {
 
 /**
  * Get all France located Bib Gourmand restaurants
+ * @param {Boolean} withWrite
  * @return {Array} restaurants
  */
-const get = async (withWrite = true) => {
+const get = async (withWrite = false) => {
   const totalRestaurants = await allRestaurants();
   if (withWrite) writeJson(totalRestaurants, "./server/maitreRestaurants.json");
   return totalRestaurants;
@@ -110,5 +111,3 @@ const get = async (withWrite = true) => {
 module.exports = {
   get
 };
-
-_ = get();
