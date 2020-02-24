@@ -62,23 +62,23 @@ const cookingOptions = [
 
 const sortingOptions = [
   {
-    value: "Trier par prix croissant",
+    value: "PRICE_ASC",
     label: "Trier par prix croissant"
   },
   {
-    value: "Trier par prix décroissant",
+    value: "PRICE_DESC",
     label: "Trier par prix décroissant"
   },
   {
-    value: "Trier par distance",
+    value: "DISTANCE",
     label: "Trier par distance"
   },
   {
-    value: "Trier par note décroissante",
+    value: "RATING_DESC",
     label: "Trier par note décroissante"
   },
   {
-    value: "Trier par note croissante",
+    value: "RATING_ASC",
     label: "Trier par note croissante"
   }
 ];

@@ -47,28 +47,33 @@ const MapContainer = ({ userLocation, restaurants, setRestaurantsFocus }) => {
   };
 
   const renderRestaurants = () =>
-    restaurants.map(
-      r =>
-        r.latitude &&
-        r.longitude && (
-          <Marker
-            key={r._id}
-            latitude={r.latitude}
-            longitude={r.longitude}
-            offsetLeft={-50}
-            offsetTop={-75}
-          >
-            <div className="container-user-marker">
-              <img
-                src={getMarker(r.distinction.type)}
-                className="marker-restaurant"
-                alt="Marker restaurant"
-                onClick={() => setRestaurantsFocus(r._id)}
-              />
-            </div>
-          </Marker>
-        )
-    );
+    restaurants.map(r => {
+      const longitude = r.location.coordinates[0];
+      const latitude = r.location.coordinates[1];
+      const {
+        _id,
+        distinction: { type }
+      } = r;
+      if (longitude === 0 && latitude === 0) return null;
+      return (
+        <Marker
+          key={_id}
+          latitude={latitude}
+          longitude={longitude}
+          offsetLeft={-50}
+          offsetTop={-75}
+        >
+          <div className="container-user-marker">
+            <img
+              src={getMarker(type)}
+              className="marker-restaurant"
+              alt="Marker restaurant"
+              onClick={() => setRestaurantsFocus(_id)}
+            />
+          </div>
+        </Marker>
+      );
+    });
 
   const getMarker = distinction => {
     if (distinction === "BIB_GOURMAND") return bib_marker;
@@ -88,6 +93,7 @@ const MapContainer = ({ userLocation, restaurants, setRestaurantsFocus }) => {
             ...state,
             viewport: {
               ...state.viewport,
+              zoom: viewport.zoom,
               latitude: viewport.latitude,
               longitude: viewport.longitude
             }

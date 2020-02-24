@@ -20,7 +20,7 @@ import Skeleton from "react-loading-skeleton";
 //   },
 //   "numberVotes": 0,
 //   "rating": 0,
-//   "location": {
+//   "address": {
 //       "street": "place du Casino",
 //       "town": "Monte-Carlo",
 //       "zipCode": "98000"
@@ -30,7 +30,7 @@ import Skeleton from "react-loading-skeleton";
 
 const Restaurant = ({ content }) => {
   const getLocation = () =>
-    `${content.location.street}, ${content.location.town}, ${content.location.zipCode}`;
+    `${content.address.street}, ${content.address.town}, ${content.address.zipCode}`;
   const getPrice = () => `${content.price.bottom} - ${content.price.top} EUR`;
   const getRating = () =>
     `${content.rating} / 5 (${content.numberVotes} votes)`;

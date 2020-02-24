@@ -18,7 +18,9 @@ const App = () => {
           ...filters,
           userLocation
         });
-        const { data: restaurants } = response;
+        const { data } = response;
+        const { error, restaurants } = data;
+        if (error.length > 0) alert(error);
         setRestaurants(restaurants);
       } catch (e) {
         alert(e);

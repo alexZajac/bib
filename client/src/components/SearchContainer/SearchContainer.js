@@ -15,7 +15,9 @@ import { Restaurant, SkeletonRestaurant } from "../Restaurant";
 import SearchInput from "../SearchInput";
 
 const SearchContainer = ({ filters, setFilters, loading, restaurants }) => {
-  const [viewportWidth, setViewportWidth] = useState(null);
+  const [viewportWidth, setViewportWidth] = useState(
+    document.documentElement.clientWidth
+  );
 
   useEffect(() => {
     const handleResize = () => {
