@@ -13,9 +13,9 @@ EXPOSE 3000
 # build app
 RUN npm run build
 
-# production environment
-FROM nginx:1.16.1-alpine
-COPY --from=builder /usr/src/client/build /var/www
-COPY --from=builder /usr/src/client/nginx.conf etc/nginx/nginx.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# # production environment
+# FROM nginx:1.16.1-alpine
+# COPY --from=builder /usr/src/client/build /var/www
+# COPY --from=builder /usr/src/client/nginx.conf etc/nginx/nginx.conf
+# EXPOSE 80
+# CMD ["nginx", "-g", "daemon off;"]
