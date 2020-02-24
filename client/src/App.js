@@ -14,7 +14,7 @@ const App = () => {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const response = await axios.post("/restaurants", {
+        const response = await axios.post("/api/restaurants", {
           ...filters,
           userLocation
         });

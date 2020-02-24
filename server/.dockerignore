@@ -1,2 +1,5 @@
-*.json
+allRestaurants.json
+bibRestaurants.json
+maitreRestaurants.json
+goldenRestaurants.json
 node_modules

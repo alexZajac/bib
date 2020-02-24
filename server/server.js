@@ -98,7 +98,7 @@ const getMatch = (distinctionValue, cookingValue, query) => {
   return match;
 };
 
-app.post("/restaurants", async (req, res) => {
+app.post("/api/restaurants", async (req, res) => {
   const {
     distinction: { value: distinctionValue },
     cooking: { value: cookingValue },

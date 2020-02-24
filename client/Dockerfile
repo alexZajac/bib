@@ -15,7 +15,7 @@ RUN npm run build
 
 # production environment
 FROM nginx:1.16.1-alpine
-COPY --from=builder /usr/src/client/build /usr/share/nginx/html
-COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY --from=builder /usr/src/client/build /var/www
+COPY --from=builder /usr/src/client/nginx.conf etc/nginx/nginx.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
