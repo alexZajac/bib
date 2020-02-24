@@ -1,7 +1,6 @@
 const cheerio = require("cheerio");
 const axios = require("axios");
 const utils = require("./utils");
-const fs = require("fs");
 const {
   writeJson,
   extractText,

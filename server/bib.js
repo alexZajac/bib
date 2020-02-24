@@ -6,7 +6,7 @@ const { MongoClient } = require("mongodb");
 const MONGO_URI =
   "mongodb+srv://bibUser:xLUBmiK5byDfYAzT@bibcluster-e4tmw.mongodb.net/test?retryWrites=true&w=majority";
 
-const { readJson, writeJson, trimSpace, distance } = utils;
+const { readJson, trimSpace, distance } = utils;
 const API_KEY = "e8d78109d9c60c";
 
 const THRESHOLD_NAME = 0.9;
@@ -117,7 +117,7 @@ const encodeCoordinates = async restaurants =>
       } = restaurants[i];
       const url = `https://us1.locationiq.com/v1/search.php?key=${API_KEY}&q=${encodeURI(
         street
-      )},${encodeURI(town)},${encodeURI(zipCode)}&format=json`;
+      )},${encodeURI(town)},${encodeURI(zipCode)},France&format=json`;
 
       let lat = (long = 0);
       try {
