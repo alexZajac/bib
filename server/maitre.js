@@ -68,11 +68,11 @@ const parseRestaurantsPage = data => {
         infos[i].children[3].children[3].children[2].data
       );
       const [zipCode, town] = townZip.split(" ");
-      const location = { street, town, zipCode };
+      const address = { street, town, zipCode };
       const phone = extractTrimmed(
         infos[i].children[5].children[3].children[0].data
       );
-      restaurants.push({ name, phone, location });
+      restaurants.push({ name, phone, address });
     } else break;
     i++;
   }

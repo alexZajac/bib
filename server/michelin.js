@@ -157,7 +157,7 @@ const parseRestaurant = data => {
   const imageUrl = extractImageUrl($(".masthead__gallery-image-item"));
   const locationContainer = $(".restaurant-details__heading--list > li");
   const locationKeys = Object.keys(locationContainer);
-  let location = extractLocation(locationKeys, locationContainer);
+  let address = extractLocation(locationKeys, locationContainer);
   const rating = extractAverageRating(
     $(".restaurant-details__heading--rating")
   );
@@ -180,7 +180,7 @@ const parseRestaurant = data => {
     price,
     numberVotes,
     rating,
-    location
+    address
   };
 };
 

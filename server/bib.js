@@ -119,7 +119,7 @@ const encodeCoordinates = async restaurants =>
         street
       )},${encodeURI(town)},${encodeURI(zipCode)}&format=json`;
 
-      let lat = (long = null);
+      let lat = (long = 0);
       try {
         const results = await axios(url);
         const { data } = results;
@@ -131,7 +131,10 @@ const encodeCoordinates = async restaurants =>
       } catch (e) {
         console.log(e);
       } finally {
-        result.push({ ...restaurants[i], latitude: lat, longitude: long });
+        result.push({
+          ...restaurants[i],
+          location: { type: "Point", coordinates: [long, lat] }
+        });
       }
     }
     resolve(result);
