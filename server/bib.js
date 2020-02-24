@@ -146,11 +146,11 @@ const writeToDatabase = restaurants => {
     if (err) console.error(err);
     const collection = client.db("main").collection("restaurants");
     collection.deleteMany({}, (err, res) => {
-      if (err) throw err;
+      if (err) console.error(err);
       console.log(`Deleted ${res.deletedCount} objects`);
       collection.insertMany(restaurants, (err, res) => {
-        if (err) throw err;
-        console.log("Number of documents inserted: " + res.insertedCount);
+        if (err) console.error(err);
+        console.log(`Number of documents inserted: ${res.insertedCount}`);
         client.close();
       });
     });
@@ -162,8 +162,8 @@ const writeToDatabase = restaurants => {
  * @return {Array} Bib restaurants with Maitre Restaurateur distinction
  */
 const get = async (withWrite = true) => {
-  const michelinRestaurants = readJson("./allRestaurants.json"); // await michelinGet();
-  const maitreRestaurants = readJson("./maitreRestaurants.json"); // await maitreGet();
+  const michelinRestaurants = await michelinGet();
+  const maitreRestaurants = await maitreGet();
   const goldenRestaurants = getGoldenRestaurants(
     michelinRestaurants,
     maitreRestaurants

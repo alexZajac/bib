@@ -2,6 +2,9 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const bodyParser = require("body-parser");
+const { MongoClient } = require("mongodb");
+const MONGO_URI =
+  "mongodb+srv://bibUser:xLUBmiK5byDfYAzT@bibcluster-e4tmw.mongodb.net/test?retryWrites=true&w=majority";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -32,7 +35,7 @@ const filterRestaurants = (restaurant, distinction, cooking, query) => {
 /**
  * Method to filter restaurants out of all the available ones
  * @param  {Object} restaurant1
- * @param  {Object} restaurant1
+ * @param  {Object} restaurant2
  * @param  {string} sorting criteria
  * @return {number} how r1 is positionned relative to r2
  */
@@ -81,7 +84,47 @@ const sortRestaurants = (r1, r2, sortingFilter, userLocation) => {
   }
 };
 
-app.post("/restaurants", (req, res) => {
+/**
+ * Method to read restaurants from db
+ * @return {Array}: Array of objects restaurants
+ */
+const getRestaurantsFromDb = filters =>
+  new Promise((resolve, reject) => {
+    const client = new MongoClient(MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    const { distinctionValue, cookingValue, sortingValue, query } = filters;
+    client.connect(err => {
+      if (err) return reject(err);
+      const collection = client.db("main").collection("restaurants");
+      const match = getMatch(distinctionValue, cookingValue, query);
+      collection.find(match).toArray((err, data) => {
+        if (err) return reject(err);
+        resolve(data);
+        client.close();
+      });
+    });
+  });
+
+//   mondodb user: bibUser
+// password: xLUBmiK5byDfYAzT
+
+const getMatch = (distinctionValue, cookingValue, query) => {
+  let match = {
+    "distinction.type": distinctionValue
+  };
+  if (cookingValue !== "Toutes cuisines")
+    match = { ...match, cookingType: cookingValue };
+  if (query !== "")
+    match = {
+      ...match,
+      name: new RegExp(query, "i")
+    };
+  return match;
+};
+
+app.post("/restaurants", async (req, res) => {
   const {
     distinction: { value: distinctionValue },
     cooking: { value: cookingValue },
@@ -89,16 +132,16 @@ app.post("/restaurants", (req, res) => {
     userLocation,
     query
   } = req.body;
-  const allRestaurants = JSON.parse(
-    fs.readFileSync(path.join(__dirname, "goldenRestaurants.json"))
-  );
-  const filteredRestaurants = allRestaurants.filter(restaurant =>
-    filterRestaurants(restaurant, distinctionValue, cookingValue, query)
-  );
-  filteredRestaurants.sort((a, b) =>
-    sortRestaurants(a, b, sortingValue, userLocation)
-  );
-  res.send(JSON.stringify(filteredRestaurants));
+  const filters = { distinctionValue, cookingValue, sortingValue, query };
+  try {
+    const filteredRestaurants = await getRestaurantsFromDb(filters);
+    filteredRestaurants.sort((a, b) =>
+      sortRestaurants(a, b, sortingValue, userLocation)
+    );
+    res.json({ error: "", restaurants: filteredRestaurants });
+  } catch (e) {
+    res.json({ error: e, restaurants: [] });
+  }
 });
 
 app.listen(PORT, () => {
