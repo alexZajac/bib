@@ -1,10 +1,22 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const { MongoClient } = require("mongodb");
+const cors = require("cors");
 const app = express();
 const { PORT, MONGO_URI } = process.env;
+const whitelist = ["https://bibmastr.netlify.com"];
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  }
+};
 
 app.use(bodyParser.json());
+app.use(cors(corsOptions));
 
 /**
  * Method to filter restaurants out of all the available ones
