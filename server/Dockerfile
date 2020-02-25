@@ -8,6 +8,5 @@ RUN npm install --quiet
 
 # copy files
 COPY . .
-EXPOSE 5000
 # start dev server
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]

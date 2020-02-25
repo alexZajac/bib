@@ -99,7 +99,6 @@ const MapContainer = ({ userLocation, restaurants, setRestaurantsFocus }) => {
             }
           });
         }}
-        mapboxApiAccessToken="pk.eyJ1IjoiYWxleHphamFjIiwiYSI6ImNrNnR2cTh1ZTAzODAzZXA3MTZrMG1vd2MifQ.b7r-Znl2mfjKgkeQDPF8tg"
       >
         {renderUserLocation()}
         {renderRestaurants()}

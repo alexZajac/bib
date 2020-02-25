@@ -3,11 +3,8 @@ const axios = require("axios");
 const { get: maitreGet } = require("./maitre");
 const { get: michelinGet } = require("./michelin");
 const { MongoClient } = require("mongodb");
-const MONGO_URI =
-  "mongodb+srv://bibUser:xLUBmiK5byDfYAzT@bibcluster-e4tmw.mongodb.net/test?retryWrites=true&w=majority";
-
+const { MONGO_URI, LOCATIONIQ_API_KEY } = process.env;
 const { readJson, trimSpace, distance } = utils;
-const API_KEY = "e8d78109d9c60c";
 
 const THRESHOLD_NAME = 0.9;
 const THRESHOLD_PHONE = 1;
@@ -115,7 +112,7 @@ const encodeCoordinates = async restaurants =>
       const {
         location: { street, town, zipCode }
       } = restaurants[i];
-      const url = `https://us1.locationiq.com/v1/search.php?key=${API_KEY}&q=${encodeURI(
+      const url = `https://us1.locationiq.com/v1/search.php?key=${LOCATIONIQ_API_KEY}&q=${encodeURI(
         street
       )},${encodeURI(town)},${encodeURI(zipCode)},France&format=json`;
 

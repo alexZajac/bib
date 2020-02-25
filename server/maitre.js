@@ -5,9 +5,11 @@ const iconv = require("iconv-lite");
 const qs = require("querystring");
 const { writeJson, extractTrimmed } = utils;
 
+const { MAITRE_REQUEST_ID } = process.env;
+
 const BASE_URL = "https://www.maitresrestaurateurs.fr/annuaire/ajax/loadresult";
 const BASE_BODY = {
-  request_id: "5e9ed33460320b54b43b5c466a53136b",
+  request_id: MAITRE_REQUEST_ID,
   annuaire_mode: "standard"
 };
 const CONFIG = {

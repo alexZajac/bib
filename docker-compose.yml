@@ -2,13 +2,32 @@ version: "3"
 services:
   server:
     build: ./server/
+    expose:
+      - ${PORT}
+    environment:
+      MONGO_URI: ${MONGO_URI}
+      LOCATIONIQ_API_KEY: ${LOCATIONIQ_API_KEY}
+      MAITRE_REQUEST_ID: ${MAITRE_REQUEST_ID}
+      PORT: ${PORT}
     ports:
-      - "5000:5000"
+      - ${PORT}:${PORT}
+    # volumes:
+    #   - ./server:/usr/src/server
+    command: npm run dev
   client:
     build: ./client/
     depends_on:
       - server
     links:
       - "server"
+    expose:
+      - ${REACT_APP_PORT}
+    environment:
+      REACT_APP_MAPBOX_ACCESS_TOKEN: ${REACT_APP_MAPBOX_ACCESS_TOKEN}
+      REACT_APP_PORT: ${REACT_APP_PORT}
     ports:
-      - "3000:80"
+      - ${REACT_APP_PORT}:${REACT_APP_PORT}
+    # volumes:
+    #   - ./client/src:/usr/src/client
+    #   - ./client/public:/usr/src/public
+    command: npm run start

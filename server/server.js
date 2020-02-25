@@ -1,11 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const { MongoClient } = require("mongodb");
-const MONGO_URI =
-  "mongodb+srv://bibUser:xLUBmiK5byDfYAzT@bibcluster-e4tmw.mongodb.net/test?retryWrites=true&w=majority";
-
 const app = express();
-const PORT = process.env.PORT || 5000;
+const { PORT, MONGO_URI } = process.env;
 
 app.use(bodyParser.json());
 
