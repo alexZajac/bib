@@ -1,4 +1,7 @@
-# BIB
+# BibMastr
+
+## Demo
+![](./img/demo.gif)
 
 > Maître Restaurateur x Bib Gourmand
 
