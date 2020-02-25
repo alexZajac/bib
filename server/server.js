@@ -95,6 +95,10 @@ const getMatch = (distinctionValue, cookingValue, query) => {
   return match;
 };
 
+app.get("/api", (req, res) => {
+  res.send("Hello world!");
+});
+
 app.post("/api/restaurants", async (req, res) => {
   const {
     distinction: { value: distinctionValue },

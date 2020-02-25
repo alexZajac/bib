@@ -3,6 +3,8 @@ import axios from "axios";
 import { defaultOptions } from "./Constants";
 import "./App.css";
 
+const { REACT_APP_API_URL } = process.env;
+
 import { MapContainer, SearchContainer } from "./components";
 
 const App = () => {
@@ -14,10 +16,13 @@ const App = () => {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const response = await axios.post("/api/restaurants", {
-          ...filters,
-          userLocation
-        });
+        const response = await axios.post(
+          `${REACT_APP_API_URL}/api/restaurants`,
+          {
+            ...filters,
+            userLocation
+          }
+        );
         const { data } = response;
         const { error, restaurants } = data;
         if (error.length > 0) alert(error);
