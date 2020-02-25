@@ -1,5 +1,8 @@
 # BibMastr
 
+A responsive web application that allows filtering and querying Maitre Restaurateurs and Bib Gourmand restaurants.
+Filtering by distinction, cooking type and distance price or rating is made with a nodejs express API communicating with a MongoDB Atlas cluster.
+
 ## Demo
 ![](./img/demo.gif)
 
