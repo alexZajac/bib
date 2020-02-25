@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { defaultOptions } from "./Constants";
 import "./App.css";
+import { MapContainer, SearchContainer } from "./components";
 
 const { REACT_APP_API_URL } = process.env;
-
-import { MapContainer, SearchContainer } from "./components";
 
 const App = () => {
   const [userLocation, setUserLocation] = useState(null);
