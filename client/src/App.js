@@ -52,6 +52,7 @@ const App = () => {
         long: position.coords.longitude
       };
       setUserLocation(userLocation);
+      setLoading(true);
     });
   };
 
